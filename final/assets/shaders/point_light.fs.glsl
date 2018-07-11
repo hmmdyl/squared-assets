@@ -21,7 +21,20 @@ uniform sampler2D DepthTexture;
 
 uniform vec3 CameraPosition;
 
-vec4 calculateLight(vec3 colour, float ambientIntensity, float diffuseIntensity, vec3 lightDirection, vec3 worldPosition, vec3 normal) {
+uniform bool CastShadow;
+uniform samplerCube ShadowMap;
+
+float calculateShadowFactor(vec3 lightDir) {
+	float sampleDist = texture(ShadowMap, lightDir).r;
+	float dist = length(lightDir);
+	
+	float bias = 0.00001;
+	
+	if(dist < sampleDist + bias) return 1.0;
+	else return 0.0;
+}
+
+vec4 calculateLight(vec3 colour, float ambientIntensity, float diffuseIntensity, vec3 lightDirection, vec3 worldPosition, vec3 normal, float shadow) {
 	vec4 ambientColour = vec4(colour * ambientIntensity, 1.0);
 	float diffuseFactor = dot(normal, -lightDirection);
 	
@@ -41,7 +54,7 @@ vec4 calculateLight(vec3 colour, float ambientIntensity, float diffuseIntensity,
 		}
 	}
 	
-	return (ambientColour + diffuseColour + specularColour);
+	return (ambientColour + shadow * (diffuseColour + specularColour));
 }
 
 vec4 calculatePointLight(vec3 worldPosition, vec3 normal) {
@@ -49,7 +62,13 @@ vec4 calculatePointLight(vec3 worldPosition, vec3 normal) {
 	float distance = length(lightDir);
 	lightDir = normalize(lightDir);
 	
-	vec4 colour = calculateLight(LightColour, AmbientIntensity, DiffuseIntensity, lightDir, worldPosition, normal);
+	float shadow = 1.0;
+	
+	if(CastShadow) {
+		shadow = calculateShadowFactor(lightDir);
+	}
+	
+	vec4 colour = calculateLight(LightColour, AmbientIntensity, DiffuseIntensity, lightDir, worldPosition, normal, shadow);
 	
 	float attenuation = ConstantAttenuation + LinearAttenuation * distance + ExponentialAttenuation * distance * distance;
 	attenuation = max(1.0, attenuation);
