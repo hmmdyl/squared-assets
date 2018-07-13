@@ -59,6 +59,7 @@ vec4 calculateLight(vec3 colour, float ambientIntensity, float diffuseIntensity,
 
 vec4 calculatePointLight(vec3 worldPosition, vec3 normal) {
 	vec3 lightDir = worldPosition - LightPosition;
+	//vec3 lightDir = LightPosition - worldPosition;
 	float distance = length(lightDir);
 	lightDir = normalize(lightDir);
 	
