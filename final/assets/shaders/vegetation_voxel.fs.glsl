@@ -24,6 +24,7 @@ void main() {
 	else diffuse = fColour;
 
 	DiffuseOut = diffuse;
+
 	WorldPositionOut = fWorldPos;
 	NormalOut = vec3(0, 1, 0);
 }

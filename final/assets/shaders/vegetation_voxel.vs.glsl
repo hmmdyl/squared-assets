@@ -17,5 +17,5 @@ void main() {
 	fWorldPos = (Model * vec4(Vertex, 1)).xyz;
 	fTexCoord = TexCoord;
 	fColour = Colour.xyz / vec3(255);
-	fTexID = Colour.w;
+	fTexID = Colour.w;// > 128 ? 1 : 0.5;
 }
