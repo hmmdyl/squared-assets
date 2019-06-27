@@ -9,10 +9,8 @@ layout(location = 2) out vec3 NormalOut;
 
 void main()
 {
-	if(fNormal.y >= 0.5)
-		DiffuseOut = vec3(0.1, 0.75, 0.9);
-	else
-		DiffuseOut = vec3(0.05, 0.35, 0.4);
+	DiffuseOut = vec3(0.1, 0.75, 0.9);
+	DiffuseOut *= fNormal.y;
 	WorldPositionOut = fWorldPos;
 	NormalOut = fNormal;
 }
