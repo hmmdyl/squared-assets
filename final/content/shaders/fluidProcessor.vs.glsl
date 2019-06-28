@@ -34,28 +34,15 @@ float waveHeight(vec2 coord)
 	return h;
 }
 
-vec2 derivedWave(vec2 coord, int i)
-{
-	float freq = 2 * 3.14159 / Wavelengths[i];
-	float phase = Speed[i] * freq;
-	float theta = dot(Direction[i], coord);
-	vec2 amp;
-	amp.x = Amplitudes[i] * Direction[i].x * freq;
-	amp.y = Amplitudes[i] * Direction[i].y * freq;
-	float c = cos(theta * freq + Time * phase) / 2 + 0.5;
-	vec2 norm;
-	norm.x = -amp.x * c;
-	norm.y = -amp.y * c;
-	return norm;
-}
-
 vec3 waveNormal(vec2 coord)
 {
-	vec2 n;
-	for(int i = 0; i < 8; i++)
-		n += derivedWave(coord, i);
-	vec3 n1 = vec3(-n.x, -n.y, -n.x);
-	return normalize(n1);
+	float h0 = waveHeight(coord + vec2(-1, 0));
+	float h1 = waveHeight(coord + vec2(1, 0));
+	float h2 = waveHeight(coord + vec2(0, -1));
+	float h3 = waveHeight(coord + vec2(0, 1));
+	vec3 a = normalize(vec3(0.25, h1 - h0, 0.25));
+	vec3 b = normalize(vec3(0.25, h3 - h2, 0.25));
+	return cross(a, b);
 }
 
 void main()
@@ -66,7 +53,7 @@ void main()
 	{
 		vec4 waveVertex = Model * vec4(vertex, 1);
 		vertex.y -= waveHeight(waveVertex.xz);
-		normal.xyz += waveNormal(waveVertex.xz);
+		normal += waveNormal(waveVertex.xz);
 	}
 
 	gl_Position = ModelViewProjection * vec4(vertex, 1);
