@@ -1,4 +1,4 @@
-#version 400 core
+#version 430 core
 
 layout(location = 0) in vec3 Vertex;
 layout(location = 1) in ivec4 Colour;
