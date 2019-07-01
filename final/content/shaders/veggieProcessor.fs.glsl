@@ -13,17 +13,17 @@ layout(location = 2) out vec3 NormalOut;
 uniform sampler2DArray Textures;
 
 void main() {
-	/*vec4 texel = texture2DArray(Textures, vec3(fTexCoord, fTexID));
-	vec3 diffuse;
+	vec4 texel = texture2DArray(Textures, vec3(fTexCoord, fTexID));
+	vec3 diffuse = fColour;
 
 	if(texel.a < 0.3) discard;
 	else if(texel.a > 0.35 && texel.a < 0.55)
 		diffuse = texel.rgb;
 	else if(texel.a > 0.6 && texel.a < 0.8)
 		diffuse = texel.rgb * fColour;
-	else diffuse = fColour;*/
+	else diffuse = fColour;
 
-	DiffuseOut = vec3(1);
+	DiffuseOut = diffuse;
 
 	WorldPositionOut = fWorldPos;
 	NormalOut = vec3(0, 1, 0);
