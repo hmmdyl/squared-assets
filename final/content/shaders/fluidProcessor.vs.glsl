@@ -58,5 +58,5 @@ void main()
 
 	gl_Position = ModelViewProjection * vec4(vertex, 1);
 	fNormal = normal;
-	fWorldPos = (ModelView * vec4(Vertex, 1)).xyz;
+	fWorldPos = (Model * vec4(Vertex, 1)).xyz;
 }

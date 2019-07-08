@@ -9,6 +9,7 @@ out vec2 fTexCoord;
 flat out vec3 fColour;
 flat out float fTexID;
 
+uniform mat4 Model;
 uniform mat4 ModelView;
 uniform mat4 ModelViewProjection;
 
@@ -35,7 +36,7 @@ void main()
 	//vertex.z += offset * Direction.y;
 
 	gl_Position = ModelViewProjection * vec4(vertex, 1);
-	fWorldPos = (ModelView * vec4(vertex, 1)).xyz;
+	fWorldPos = (Model * vec4(vertex, 1)).xyz;
 	fTexCoord = TexCoord;
 	fColour = Colour.xyz / vec3(255);
 	fTexID = Colour.w;// > 128 ? 1 : 0.5;

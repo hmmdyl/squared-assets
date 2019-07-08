@@ -32,5 +32,5 @@ void main() {
 	fMeta = Meta;
     fTexID = Meta.x | (Meta.y << 8);
 
-    fWorldPos = (ModelView * vec4(vert, 1)).xyz;
+    fWorldPos = (Model * vec4(vert, 1)).xyz;
 }
