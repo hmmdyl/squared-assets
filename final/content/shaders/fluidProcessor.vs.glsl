@@ -49,7 +49,7 @@ void main()
 {
 	vec3 vertex = Vertex;
 	vec3 normal = normalize((Normal / 1023.0) * 2.0 - 1.0);
-	if(normal.y > 0.99)
+	//if(normal.y > 0.99)
 	{
 		vec4 waveVertex = Model * vec4(vertex, 1);
 		vertex.y -= waveHeight(waveVertex.xz);
