@@ -5,10 +5,14 @@ layout(location = 1) in vec3 Normal;
 
 out vec3 fNormal;
 out vec3 fWorldPos;
+out vec4 fClipSpacePre;
+out vec4 fClipSpaceProper;
+out vec3 fToCamera;
 
 uniform mat4 ModelViewProjection;
 uniform mat4 ModelView;
 uniform mat4 Model;
+uniform vec3 CameraPosition;
 
 uniform float Fit10bScale;
 
@@ -29,7 +33,7 @@ float wave(vec2 coord, int i)
 float waveHeight(vec2 coord)
 {
 	float h = 0;
-	for(int i = 0; i < 8; i++)
+	for(int i = 0; i < 1; i++)
 		h += wave(coord, i);
 	return h;
 }
@@ -47,6 +51,8 @@ vec3 waveNormal(vec2 coord)
 
 void main()
 {
+	fClipSpacePre = ModelViewProjection * vec4(Vertex, 1);
+
 	vec3 vertex = Vertex;
 	vec3 normal = normalize((Normal / 1023.0) * 2.0 - 1.0);
 	//if(normal.y > 0.99)
@@ -55,8 +61,12 @@ void main()
 		vertex.y -= waveHeight(waveVertex.xz);
 		normal += waveNormal(waveVertex.xz);
 	}
+	normal = normalize(normal);
 
-	gl_Position = ModelViewProjection * vec4(vertex, 1);
+	fClipSpaceProper = ModelViewProjection * vec4(vertex, 1);
+	gl_Position = fClipSpaceProper;
 	fNormal = normal;
 	fWorldPos = (Model * vec4(Vertex, 1)).xyz;
+
+	fToCamera = normalize(CameraPosition - (Model * vec4(vertex, 1)).xyz);
 }
