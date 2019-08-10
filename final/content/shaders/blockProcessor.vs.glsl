@@ -31,6 +31,7 @@ void main() {
 
 	fMeta = Meta;
     fTexID = Meta.x | (Meta.y << 8);
+	//fTexID = 0;
 
     fWorldPos = (Model * vec4(vert, 1)).xyz;
 }

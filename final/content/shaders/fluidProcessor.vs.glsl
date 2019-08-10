@@ -2,12 +2,14 @@
 
 layout(location = 0) in vec3 Vertex;
 layout(location = 1) in vec3 Normal;
+layout(location = 2) in vec4 Colour;
 
 out vec3 fNormal;
 out vec3 fWorldPos;
 out vec4 fClipSpacePre;
 out vec4 fClipSpaceProper;
 out vec3 fToCamera;
+out vec3 fColour;
 
 uniform mat4 ModelViewProjection;
 uniform mat4 ModelView;
@@ -67,6 +69,7 @@ void main()
 	gl_Position = fClipSpaceProper;
 	fNormal = normal;
 	fWorldPos = (Model * vec4(Vertex, 1)).xyz;
+	fColour = Colour.rgb;
 
 	fToCamera = normalize(CameraPosition - (Model * vec4(vertex, 1)).xyz);
 }

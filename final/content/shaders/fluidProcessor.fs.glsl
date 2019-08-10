@@ -5,6 +5,7 @@ in vec3 fWorldPos;
 in vec4 fClipSpacePre;
 in vec4 fClipSpaceProper;
 in vec3 fToCamera;
+in vec3 fColour;
 
 layout(location = 0) out vec3 DiffuseOut;
 layout(location = 1) out vec3 WorldPositionOut;
@@ -17,7 +18,12 @@ uniform sampler2D RefractionDepth;
 uniform float NearPlane;
 uniform float FarPlane;
 
-const float FresnelReflectiveFactor = 1.5;
+uniform float FresnelReflectiveFactor;// = 0.9;
+uniform float MurkDepth;
+uniform float MinimumMurkStrength;
+uniform float MaximumMurkStrength;
+
+uniform vec3 DebugColour;
 
 vec2 clipToTex(vec4 c)
 {
@@ -52,22 +58,31 @@ vec3 murkiness(vec3 refractColour, vec3 waterColour, float waterDepth_)
 	const float murkyDepth = 3;
 	const float minCol = 0.3;
 	const float maxCol = 1;
-	float factor = smoothstep(0, murkyDepth, waterDepth_);
-	float murkiness = minCol + factor * (maxCol - minCol);
+	float factor = smoothstep(0, MurkDepth, waterDepth_);
+	float murkiness = MinimumMurkStrength + factor * (MaximumMurkStrength - MinimumMurkStrength);
 	return mix(refractColour, waterColour, murkiness);
 }
 
 void main()
 {
-	//DiffuseOut = vec3(0.1, 0.75, 0.9);
+	//DiffuseOut = vec3(0.9, 0.75, 0.9);
 	//DiffuseOut *= fNormal.y;
-	vec2 refractionTexCoord = clipToTex(fClipSpaceProper);
-	vec2 refractionPre = clipToTex(fClipSpacePre);
+	
+	/*vec2 refractionTexCoord = clipToTex(fClipSpaceProper);
+	vec2 refractionPre = clipToTex(reflectClip);
 
 	float wd = waterDepth(refractionPre);
-	vec3 refractionDiff = mix(texture(RefractionDiffuse, refractionPre).rgb, vec3(0.1, 0.75, 0.9), 0.5);
+	vec3 refractionDiff = mix(texture(RefractionDiffuse, refractionPre).rgb, vec3(0.1, 0.75, 0.9), 0.5);*/
 
-	DiffuseOut = refractionDiff;
+	vec3 waterColour = DebugColour;
+	
+	vec2 refractionTC = clipToTex(fClipSpacePre);
+	vec3 refractionTexture = texture(RefractionDiffuse, refractionTC).rgb;
+	vec3 refractionFinal = murkiness(refractionTexture, waterColour, waterDepth(refractionTC));
+
+	vec3 colourFinal = mix(waterColour, refractionFinal, fresnel(fNormal));
+
+	DiffuseOut = colourFinal;
 	WorldPositionOut = fWorldPos;
 	NormalOut = fNormal;
 }
