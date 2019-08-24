@@ -21,6 +21,8 @@ void main() {
                  texture2DArray(Diffuse, vec3(fTexCoordY, fTexID)) * n.y +
                  texture2DArray(Diffuse, vec3(fTexCoordZ, fTexID)) * n.z;
 
+	if(texel.a < 0.3) discard;
+
     WorldPositionOut = fWorldPos;
     DiffuseOut = texel.rgb;
     //DiffuseOut = vec3(1);

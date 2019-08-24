@@ -1,8 +1,8 @@
 #version 430 core
 
-layout(location = 0) in vec3 Vertex;
+layout(location = 0) in vec4 Vertex;
 layout(location = 1) in ivec4 Colour;
-layout(location = 2) in vec2 TexCoord;
+layout(location = 2) in ivec2 TexCoord;
 
 out vec3 fWorldPos;
 out vec2 fTexCoord;
@@ -12,6 +12,10 @@ flat out float fTexID;
 uniform mat4 Model;
 uniform mat4 ModelView;
 uniform mat4 ModelViewProjection;
+
+uniform float CompChunkMax;
+uniform float CompFit10B;
+uniform float CompOffset;
 
 uniform float Time;
 const float Amplitude = 0.25;
@@ -29,15 +33,13 @@ float wave(vec2 coord)
 
 void main() 
 {
-	//vec3 vertexModel = (Model * vec4(Vertex, 1)).xyz;
-	//float offset = wave(vertexModel.xz);
-	vec3 vertex = Vertex;
-	//vertex.x += offset * Direction.x;
-	//vertex.z += offset * Direction.y;
+	vec3 vertex = (Vertex.xyz / CompFit10B) - CompOffset;
 
 	gl_Position = ModelViewProjection * vec4(vertex, 1);
 	fWorldPos = (Model * vec4(vertex, 1)).xyz;
-	fTexCoord = TexCoord;
+	
+	fTexCoord = vec2(0.5);
+	fTexCoord = TexCoord / 65535.0;
 	fColour = Colour.xyz / vec3(255);
 	fTexID = Colour.w;// > 128 ? 1 : 0.5;
 }

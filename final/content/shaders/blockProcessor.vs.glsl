@@ -1,6 +1,6 @@
 #version 430 core
 
-layout(location = 0) in vec3 Vertex;
+layout(location = 0) in vec4 Vertex;
 layout(location = 1) in vec3 Normal;
 layout(location = 2) in ivec4 Meta;
 
@@ -19,8 +19,8 @@ uniform mat4 ModelView;
 uniform float Fit10bScale;
 
 void main() {
-    //vec3 vert = Vertex.xyz / Fit10bScale;
-    vec3 vert = Vertex.xyz;
+    vec3 vert = Vertex.xyz / Fit10bScale;
+    //vec3 vert = Vertex.xyz;
     gl_Position = ModelViewProjection * vec4(vert, 1);
     fNormal = (Normal.xyz / 1023) * 2 - 1;
     fNormal = normalize(fNormal);
