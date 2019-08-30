@@ -10,6 +10,7 @@ in vec3 fColour;
 layout(location = 0) out vec3 DiffuseOut;
 layout(location = 1) out vec3 WorldPositionOut;
 layout(location = 2) out vec3 NormalOut;
+layout(location = 3) out vec2 MetaOut;
 
 uniform sampler2D RefractionDiffuse;
 uniform sampler2D RefractionNormal;
@@ -80,9 +81,14 @@ void main()
 	vec3 refractionTexture = texture(RefractionDiffuse, refractionTC).rgb;
 	vec3 refractionFinal = murkiness(refractionTexture, waterColour, waterDepth(refractionTC));
 
-	vec3 colourFinal = mix(waterColour, refractionFinal, fresnel(fNormal));
+	vec3 colourFinal = refractionFinal; //mix(waterColour, refractionFinal, fresnel(fNormal));
 
 	DiffuseOut = colourFinal;
 	WorldPositionOut = fWorldPos;
 	NormalOut = fNormal;
+	
+	MetaOut.x = 12;
+	MetaOut.y = 3.0;
+	//MetaOut.z = 0;
+	//MetaOut.w = 0;
 }
