@@ -35,7 +35,7 @@ float wave(vec2 coord, int i)
 float waveHeight(vec2 coord)
 {
 	float h = 0;
-	for(int i = 0; i < 1; i++)
+	for(int i = 0; i < 3; i++)
 		h += wave(coord, i);
 	return h;
 }
