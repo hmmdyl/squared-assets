@@ -12,6 +12,7 @@ in vec3 fWorldPos;
 layout(location = 1) out vec3 WorldPositionOut;
 layout(location = 0) out vec3 DiffuseOut;
 layout(location = 2) out vec3 NormalOut;
+layout(location = 3) out vec2 SpecOut;
 
 uniform sampler2DArray Diffuse;
 
@@ -28,4 +29,5 @@ void main() {
     //DiffuseOut = vec3(1);
 	//DiffuseOut = vec3(fMeta.x * 100);
     NormalOut = fNormal;
+	SpecOut = vec2(0, 0);
 }
