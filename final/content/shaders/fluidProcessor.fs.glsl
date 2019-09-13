@@ -66,22 +66,13 @@ vec3 murkiness(vec3 refractColour, vec3 waterColour, float waterDepth_)
 
 void main()
 {
-	//DiffuseOut = vec3(0.9, 0.75, 0.9);
-	//DiffuseOut *= fNormal.y;
-	
-	/*vec2 refractionTexCoord = clipToTex(fClipSpaceProper);
-	vec2 refractionPre = clipToTex(reflectClip);
-
-	float wd = waterDepth(refractionPre);
-	vec3 refractionDiff = mix(texture(RefractionDiffuse, refractionPre).rgb, vec3(0.1, 0.75, 0.9), 0.5);*/
-
 	vec3 waterColour = DebugColour;
 	
 	vec2 refractionTC = clipToTex(fClipSpacePre);
 	vec3 refractionTexture = texture(RefractionDiffuse, refractionTC).rgb;
 	vec3 refractionFinal = murkiness(refractionTexture, waterColour, waterDepth(refractionTC));
 
-	vec3 colourFinal = refractionFinal; //mix(waterColour, refractionFinal, fresnel(fNormal));
+	vec3 colourFinal = refractionFinal;
 
 	DiffuseOut = colourFinal;
 	WorldPositionOut = fWorldPos;
