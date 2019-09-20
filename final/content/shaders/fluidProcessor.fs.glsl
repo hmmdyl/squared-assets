@@ -16,6 +16,8 @@ uniform sampler2D RefractionDiffuse;
 uniform sampler2D RefractionNormal;
 uniform sampler2D RefractionWorldPos;
 uniform sampler2D RefractionDepth;
+uniform sampler2D NormalMap;
+
 uniform float NearPlane;
 uniform float FarPlane;
 
@@ -23,6 +25,8 @@ uniform float FresnelReflectiveFactor;// = 0.9;
 uniform float MurkDepth;
 uniform float MinimumMurkStrength;
 uniform float MaximumMurkStrength;
+
+uniform float Time;
 
 uniform vec3 DebugColour;
 
@@ -67,8 +71,22 @@ vec3 murkiness(vec3 refractColour, vec3 waterColour, float waterDepth_)
 void main()
 {
 	vec3 waterColour = DebugColour;
-	
+
 	vec2 refractionTC = clipToTex(fClipSpacePre);
+
+	float t = Time * 0.01;
+
+	vec3 normalMap;
+	if(fNormal.y > 0.9)
+	{
+		normalMap = texture(NormalMap, fWorldPos.xz / 2 + vec2(t, 0)).rgb; 
+		normalMap.x = normalMap.x * 2 - 1;
+		normalMap.z = normalMap.z * 2 - 1;
+		normalMap = normalize(normalMap);
+		normalMap = fNormal + normalMap * 0.5;
+	}
+	else normalMap = fNormal;
+
 	vec3 refractionTexture = texture(RefractionDiffuse, refractionTC).rgb;
 	vec3 refractionFinal = murkiness(refractionTexture, waterColour, waterDepth(refractionTC));
 
@@ -76,10 +94,8 @@ void main()
 
 	DiffuseOut = colourFinal;
 	WorldPositionOut = fWorldPos;
-	NormalOut = fNormal;
+	NormalOut = normalMap;
 	
-	MetaOut.x = 12;
-	MetaOut.y = 3.0;
-	//MetaOut.z = 0;
-	//MetaOut.w = 0;
+	MetaOut.x = 120;
+	MetaOut.y = 30;
 }
