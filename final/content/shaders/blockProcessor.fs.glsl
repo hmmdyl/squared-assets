@@ -26,8 +26,6 @@ void main() {
 
     WorldPositionOut = fWorldPos;
     DiffuseOut = texel.rgb;
-    //DiffuseOut = vec3(1);
-	//DiffuseOut = vec3(fMeta.x * 100);
     NormalOut = fNormal;
 	SpecOut = vec2(0, 0);
 }
