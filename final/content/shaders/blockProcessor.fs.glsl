@@ -10,7 +10,7 @@ in vec2 fTexCoordZ;
 in vec3 fWorldPos;
 
 layout(location = 1) out vec3 WorldPositionOut;
-layout(location = 0) out vec3 DiffuseOut;
+layout(location = 0) out vec4 DiffuseOut;
 layout(location = 2) out vec3 NormalOut;
 layout(location = 3) out vec2 SpecOut;
 
@@ -25,7 +25,7 @@ void main() {
 	if(texel.a < 0.3) discard;
 
     WorldPositionOut = fWorldPos;
-    DiffuseOut = texel.rgb;
+    DiffuseOut = vec4(texel.rgb, 1.0);
     NormalOut = fNormal;
 	SpecOut = vec2(0, 0);
 }

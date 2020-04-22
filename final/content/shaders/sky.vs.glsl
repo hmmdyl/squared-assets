@@ -1,5 +1,5 @@
 #version 430 core
-
+ 
 layout(location = 0) in vec3 Vertex;
 
 out float fHeight;
@@ -7,6 +7,7 @@ out vec3 fWorldPos;
 
 uniform mat4 MVP;
 uniform mat4 Model;
+uniform float MaxHeight;
 
 void main()
 {

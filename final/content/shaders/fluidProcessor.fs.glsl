@@ -7,7 +7,7 @@ in vec4 fClipSpaceProper;
 in vec3 fToCamera;
 in vec3 fColour;
 
-layout(location = 0) out vec3 DiffuseOut;
+layout(location = 0) out vec4 DiffuseOut;
 layout(location = 1) out vec3 WorldPositionOut;
 layout(location = 2) out vec3 NormalOut;
 layout(location = 3) out vec2 MetaOut;
@@ -92,7 +92,7 @@ void main()
 
 	vec3 colourFinal = refractionFinal;
 
-	DiffuseOut = colourFinal;
+	DiffuseOut = vec4(colourFinal, 1.0);
 	WorldPositionOut = fWorldPos;
 	NormalOut = normalMap;
 	

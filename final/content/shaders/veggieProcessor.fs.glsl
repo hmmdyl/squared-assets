@@ -6,7 +6,7 @@ in vec2 fTexCoord;
 flat in vec3 fColour;
 flat in float fTexID;
 
-layout(location = 0) out vec3 DiffuseOut;
+layout(location = 0) out vec4 DiffuseOut;
 layout(location = 1) out vec3 WorldPositionOut;
 layout(location = 2) out vec3 NormalOut;
 
@@ -23,7 +23,7 @@ void main() {
 		diffuse = texel.rgb * fColour;
 	else diffuse = fColour;
 
-	DiffuseOut = diffuse;
+	DiffuseOut = vec4(diffuse, 1.0);
 
 	WorldPositionOut = fWorldPos;
 	NormalOut = vec3(0, 1, 0);
